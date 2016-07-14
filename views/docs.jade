@@ -1,0 +1,51 @@
+extends layout
+
+block content
+	h1.
+		Docs				  
+	u1
+	table
+		tr
+			th Name
+			th Age
+			th Address
+		each data in docs
+			tr
+				th 
+					=data.name
+				th 
+					=data.age
+				th 
+					=data.address
+
+	h1.
+		Bar Chart
+	script(src='http://code.jquery.com/jquery-1.11.0.min.js')
+	script(src='http://cdnjs.cloudflare.com/ajax/libs/flot/0.8.1/jquery.flot.min.js')
+	script(src='http://cdnjs.cloudflare.com/ajax/libs/flot/0.8.1/jquery.flot.categories.min.js')		
+	#placeholder(style='width:700px;height:350px')
+	script.
+		$(function () {
+		var local_data =!{JSON.stringify(docs)}
+		var data = [{"name":"Girish","age":24},{"name":"Rahul","age":30}];
+		var users = local_data.map(function(b) { return [ b.name, b.age ]});
+		$.plot("#placeholder", [ users ],
+		{
+		series: {
+		bars: { show: true, barWidth: 0.6, align: "center" }
+		},
+		xaxis: {   mode: "categories", tickLength: 0 }
+		});
+		});
+	
+	h1 D3 testing
+	.chart
+	script(src='https://d3js.org/d3.v4.min.js')
+	script.
+		var data = !{JSON.stringify(docs)}
+		d3.select(".chart")
+			.selectAll("div")
+			.data(data.map(function(b){ return b.age}))
+			.enter().append("div")
+			.style("width", function(d) { return d * 10 + "px"; })
+			.text(function(d){return d;});
